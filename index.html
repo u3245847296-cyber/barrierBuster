@@ -1,296 +1,137 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  TouchableOpacity, 
-  SafeAreaView, 
-  StatusBar, 
-  ScrollView,
-  Dimensions,
-  Platform
-} from 'react-native';
-import { 
-  Smartphone, 
-  CheckCircle2, 
-  ArrowRight, 
-  Settings, 
-  Layout, 
-  Wifi 
-} from 'lucide-react-native';
-
-const { width } = Dimensions.get('window');
+  MapPin, 
+  Navigation, 
+  Search, 
+  Menu, 
+  Accessibility, 
+  Clock, 
+  ChevronRight,
+  Settings,
+  AlertTriangle,
+  Info
+} from 'lucide-react';
 
 /**
- * Componente principale dell'applicazione (App)
- * Progettato con uno stile "Apple-like" pulito e moderno.
+ * Applicazione "Barrier Buster"
+ * Focus su navigazione accessibile e segnalazione ostacoli.
  */
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
-  const [lastSync, setLastSync] = useState(new Date().toLocaleTimeString());
-
-  const handleSync = () => {
-    // Simulazione di una sincronizzazione
-    const now = new Date().toLocaleTimeString();
-    setLastSync(now);
-  };
+  const [activeTab, setActiveTab] = useState('map');
+  const [startPoint, setStartPoint] = useState('');
+  const [endPoint, setEndPoint] = useState('');
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
-      
-      {/* Intestazione */}
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.headerTitle}>Il mio iPhone</Text>
-          <Text style={styles.headerSubtitle}>Stato del sistema: Ottimale</Text>
-        </View>
-        <TouchableOpacity style={styles.profileButton}>
-          <Settings color="#007AFF" size={24} />
-        </TouchableOpacity>
-      </View>
+    <div className="flex flex-col h-screen bg-[#F2F2F7] font-sans overflow-hidden select-none">
+      {/* Intestazione Superiore */}
+      <header className="absolute top-0 left-0 right-0 z-20 px-4 pt-12 pb-6 bg-gradient-to-b from-white/90 to-transparent backdrop-blur-sm">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="bg-[#007AFF] p-2 rounded-xl shadow-lg shadow-blue-200">
+              <Accessibility size={24} className="text-white" />
+            </div>
+            <h1 className="text-2xl font-black tracking-tight text-[#1C1C1E]">
+              Barrier <span className="text-[#007AFF]">Buster</span>
+            </h1>
+          </div>
+          <button className="bg-white p-2.5 rounded-full shadow-md active:scale-90 transition-transform border border-gray-100">
+            <Menu size={20} className="text-gray-600" />
+          </button>
+        </div>
 
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        
-        {/* Card di Stato Principale */}
-        <View style={[styles.card, styles.shadow]}>
-          <View style={styles.cardHeader}>
-            <Wifi color="#34C759" size={20} />
-            <Text style={styles.cardBadge}>Connesso</Text>
-          </View>
-          <Text style={styles.cardTitle}>Sincronizzazione Cloud</Text>
-          <Text style={styles.cardBody}>
-            Ultimo aggiornamento eseguito alle {lastSync}. Tutti i dati sono al sicuro.
-          </Text>
-          <TouchableOpacity style={styles.primaryButton} onPress={handleSync}>
-            <Text style={styles.buttonText}>Sincronizza Ora</Text>
-            <CheckCircle2 color="white" size={18} />
-          </TouchableOpacity>
-        </View>
+        {/* Box di Ricerca Percorso */}
+        <div className="bg-white rounded-2xl p-4 shadow-xl shadow-black/5 border border-gray-100 space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="flex flex-col items-center gap-1">
+              <div className="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+              <div className="w-0.5 h-6 bg-gray-200"></div>
+              <MapPin size={16} className="text-red-500" />
+            </div>
+            <div className="flex-1 space-y-2">
+              <input 
+                type="text" 
+                placeholder="Punto di partenza" 
+                className="w-full text-sm font-medium focus:outline-none placeholder:text-gray-400"
+                value={startPoint}
+                onChange={(e) => setStartPoint(e.target.value)}
+              />
+              <div className="h-[1px] bg-gray-100 w-full"></div>
+              <input 
+                type="text" 
+                placeholder="Dove vuoi andare?" 
+                className="w-full text-sm font-medium focus:outline-none placeholder:text-gray-400"
+                value={endPoint}
+                onChange={(e) => setEndPoint(e.target.value)}
+              />
+            </div>
+            <button className="bg-[#F2F2F7] p-3 rounded-xl active:scale-95 transition-all text-[#007AFF]">
+              <Navigation size={20} fill="currentColor" className="opacity-20" />
+            </button>
+          </div>
+        </div>
+      </header>
 
-        {/* Sezione Azioni Rapide */}
-        <Text style={styles.sectionTitle}>Azioni Rapide</Text>
-        <View style={styles.grid}>
-          <TouchableOpacity style={[styles.gridItem, styles.shadow]}>
-            <Layout color="#5856D6" size={28} />
-            <Text style={styles.gridText}>Layout</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.gridItem, styles.shadow]}>
-            <Smartphone color="#FF9500" size={28} />
-            <Text style={styles.gridText}>Dispositivi</Text>
-          </TouchableOpacity>
-        </View>
+      {/* Area Mappa (Simulata) */}
+      <div className="flex-1 relative bg-[#E5E5EA]">
+        {/* SVG che simula una mappa urbana */}
+        <svg className="w-full h-full object-cover" viewBox="0 0 400 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="800" fill="#E5E5EA" />
+          <path d="M0 150H400M0 350H400M0 550H400M100 0V800M300 0V800" stroke="white" strokeWidth="20" />
+          <circle cx="150" cy="400" r="8" fill="#007AFF" className="animate-pulse" />
+          <circle cx="150" cy="400" r="20" fill="#007AFF" fillOpacity="0.2" className="animate-ping" />
+          
+          {/* Segnalazione Ostacolo */}
+          <g className="cursor-pointer">
+            <path d="M280 220L300 190L320 220H280Z" fill="#FF3B30" />
+            <circle cx="300" cy="205" r="12" fill="#FF3B30" fillOpacity="0.2" />
+          </g>
+        </svg>
 
-        {/* Lista Documentazione */}
-        <Text style={styles.sectionTitle}>Documentazione Recente</Text>
-        {[1, 2, 3].map((item) => (
-          <TouchableOpacity key={item} style={[styles.listItem, styles.shadow]}>
-            <View style={styles.listIconContainer}>
-              <Text style={styles.listIconText}>PDF</Text>
-            </View>
-            <View style={styles.listInfo}>
-              <Text style={styles.listTitle}>Guida Utente v.{item}.0</Text>
-              <Text style={styles.listDate}>Modificato 2 ore fa</Text>
-            </View>
-            <ArrowRight color="#C7C7CC" size={20} />
-          </TouchableOpacity>
-        ))}
-        
-        {/* Spaziatore finale per lo scroll */}
-        <View style={{ height: 100 }} />
-      </ScrollView>
+        {/* Pulsante Floating Segnalazione */}
+        <button className="absolute bottom-28 right-4 bg-[#FF3B30] text-white p-4 rounded-full shadow-2xl shadow-red-300 flex items-center gap-2 font-bold active:scale-95 transition-transform">
+          <AlertTriangle size={24} />
+          <span>Segnala Ostacolo</span>
+        </button>
+      </div>
+
+      {/* Pannello Dettagli Rapidi (Swipe up sim) */}
+      <div className="absolute bottom-20 left-0 right-0 px-4">
+        <div className="bg-white rounded-t-3xl p-4 shadow-2xl border-t border-gray-100">
+          <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-4"></div>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600">
+                <Clock size={24} />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Tempo stimato</p>
+                <p className="text-lg font-bold text-gray-900">12 min <span className="text-sm font-normal text-gray-500">(Percorso piano)</span></p>
+              </div>
+            </div>
+            <button className="bg-black text-white px-6 py-3 rounded-2xl font-bold active:opacity-80">
+              Vai
+            </button>
+          </div>
+        </div>
+      </div>
 
       {/* Tab Bar Inferiore */}
-      <View style={styles.tabBar}>
-        <TouchableOpacity onPress={() => setActiveTab('home')} style={styles.tabItem}>
-          <Layout color={activeTab === 'home' ? '#007AFF' : '#8E8E93'} size={24} />
-          <Text style={[styles.tabText, activeTab === 'home' && styles.tabActiveText]}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setActiveTab('settings')} style={styles.tabItem}>
-          <Settings color={activeTab === 'settings' ? '#007AFF' : '#8E8E93'} size={24} />
-          <Text style={[styles.tabText, activeTab === 'settings' && styles.tabActiveText]}>Impostazioni</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+      <nav className="fixed bottom-0 left-0 right-0 h-20 bg-white/90 backdrop-blur-xl border-t border-gray-200 flex justify-around items-start pt-2 px-6 z-30">
+        <button onClick={() => setActiveTab('map')} className="flex flex-col items-center gap-1 flex-1">
+          <MapPin size={24} className={activeTab === 'map' ? 'text-[#007AFF]' : 'text-gray-400'} fill={activeTab === 'map' ? "#007AFF" : "none"} fillOpacity={0.2} />
+          <span className={`text-[10px] font-bold ${activeTab === 'map' ? 'text-[#007AFF]' : 'text-gray-400'}`}>Mappa</span>
+        </button>
+        
+        <button onClick={() => setActiveTab('routes')} className="flex flex-col items-center gap-1 flex-1">
+          <Navigation size={24} className={activeTab === 'routes' ? 'text-[#007AFF]' : 'text-gray-400'} />
+          <span className={`text-[10px] font-bold ${activeTab === 'routes' ? 'text-[#007AFF]' : 'text-gray-400'}`}>Percorsi</span>
+        </button>
+
+        <button onClick={() => setActiveTab('settings')} className="flex flex-col items-center gap-1 flex-1">
+          <Settings size={24} className={activeTab === 'settings' ? 'text-[#007AFF]' : 'text-gray-400'} />
+          <span className={`text-[10px] font-bold ${activeTab === 'settings' ? 'text-[#007AFF]' : 'text-gray-400'}`}>Impostazioni</span>
+        </button>
+      </nav>
+    </div>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F2F2F7', // Colore di sfondo standard iOS
-  },
-  header: {
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#F2F2F7',
-  },
-  headerTitle: {
-    fontSize: 34,
-    fontWeight: 'bold',
-    color: '#000',
-    letterSpacing: -0.5,
-  },
-  headerSubtitle: {
-    fontSize: 15,
-    color: '#8E8E93',
-    marginTop: 2,
-  },
-  profileButton: {
-    backgroundColor: 'white',
-    padding: 10,
-    borderRadius: 50,
-    ...Platform.select({
-      ios: { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4 },
-      android: { elevation: 3 },
-    }),
-  },
-  scrollContent: {
-    paddingHorizontal: 20,
-    paddingTop: 10,
-  },
-  shadow: {
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
-  },
-  card: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
-    marginBottom: 25,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  cardBadge: {
-    color: '#34C759',
-    fontWeight: '600',
-    fontSize: 12,
-    marginLeft: 6,
-    textTransform: 'uppercase',
-  },
-  cardTitle: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#1C1C1E',
-    marginBottom: 8,
-  },
-  cardBody: {
-    fontSize: 16,
-    color: '#3A3A3C',
-    lineHeight: 22,
-    marginBottom: 20,
-  },
-  primaryButton: {
-    backgroundColor: '#007AFF',
-    borderRadius: 12,
-    paddingVertical: 14,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 17,
-    fontWeight: '600',
-    marginRight: 8,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#1C1C1E',
-    marginBottom: 15,
-  },
-  grid: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 25,
-  },
-  gridItem: {
-    backgroundColor: 'white',
-    width: (width - 55) / 2,
-    height: 110,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  gridText: {
-    marginTop: 10,
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#1C1C1E',
-  },
-  listItem: {
-    backgroundColor: 'white',
-    borderRadius: 16,
-    padding: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  listIconContainer: {
-    width: 44,
-    height: 44,
-    backgroundColor: '#E5E5EA',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  listIconText: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: '#8E8E93',
-  },
-  listInfo: {
-    flex: 1,
-    marginLeft: 15,
-  },
-  listTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1C1C1E',
-  },
-  listDate: {
-    fontSize: 13,
-    color: '#8E8E93',
-    marginTop: 2,
-  },
-  tabBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 85,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: 10,
-    borderTopWidth: 0.5,
-    borderTopColor: '#C6C6C8',
-  },
-  tabItem: {
-    alignItems: 'center',
-  },
-  tabText: {
-    fontSize: 11,
-    color: '#8E8E93',
-    marginTop: 4,
-  },
-  tabActiveText: {
-    color: '#007AFF',
-  }
-});
